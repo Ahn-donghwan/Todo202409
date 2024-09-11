@@ -2,6 +2,7 @@ package com.sparta.round13.service;
 
 import com.sparta.round13.dto.CommentSaveRequestDto;
 import com.sparta.round13.dto.CommentResponseDto;
+import com.sparta.round13.dto.CommentUpdateRequestDto;
 import com.sparta.round13.entity.Comment;
 import com.sparta.round13.entity.Todo;
 import com.sparta.round13.exception.NoSuchResourceException;
@@ -64,5 +65,34 @@ public class CommentService {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    public CommentResponseDto getDetailComment(Long commentId) {
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
+
+        return new CommentResponseDto(
+                comment.getId(),
+                comment.getUsername(),
+                comment.getContents(),
+                comment.getCreatedAt(),
+                comment.getModifiedAt()
+        );
+    }
+
+    @Transactional
+    public CommentResponseDto updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
+
+        comment.updateComment(commentUpdateRequestDto.getUsername(), commentUpdateRequestDto.getContents());
+
+        return new CommentResponseDto(
+                comment.getId(),
+                comment.getUsername(),
+                comment.getContents(),
+                comment.getCreatedAt(),
+                comment.getModifiedAt()
+        );
     }
 }
