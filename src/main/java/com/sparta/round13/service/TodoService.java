@@ -1,6 +1,7 @@
 package com.sparta.round13.service;
 
 
+import com.sparta.round13.dto.CommentDto;
 import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoDeleteRequestDto;
 import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoSaveRequestDto;
 import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoUpdateRequestDto;
@@ -9,6 +10,7 @@ import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoSimpleResponseDto;
 import com.sparta.round13.entity.Todo;
 import com.sparta.round13.exception.NoSuchResourceException;
 import com.sparta.round13.exception.UnAuthorizedAccessException;
+import com.sparta.round13.repository.CommentRepository;
 import com.sparta.round13.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.List;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final CommentRepository commentRepository;
 
     public Todo findTodoById(Long todoId){
         return todoRepository.findById(todoId).orElseThrow(() -> new NoSuchResourceException("해당 리소스를 찾을 수 없습니다. ID :" + todoId ));
@@ -77,11 +80,14 @@ public class TodoService {
         List<TodoSimpleResponseDto> dtoList = new ArrayList<>();
 
         for (Todo todo : todoList) {
+            List<CommentDto> commentList = commentRepository.findByTodoId(todo.getId());
+
             TodoSimpleResponseDto dto = new TodoSimpleResponseDto(
                     todo.getId(),
                     todo.getTodo(),
                     todo.getUsername(),
-                    todo.getModifiedAt()
+                    todo.getModifiedAt(),
+                    commentList
             );
             dtoList.add(dto);
         }

@@ -19,8 +19,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CommentService {
 
-    private final CommentRepository commentRepository;
     private final TodoRepository todoRepository;
+    private final CommentRepository commentRepository;
 
 //    public Comment findCommentById(Long todoId){
 //        return commentRepository.findById(todoId).orElseThrow(() -> new NoSuchResourceException("해당 리소스를 찾을 수 없습니다. ID :" + todoId ));
@@ -46,11 +46,14 @@ public class CommentService {
 
 
     public List<CommentResponseDto> getAllComment(Long todoId) {
+
+
         List<Comment> commentList = commentRepository.findAllByTodoId(todoId);
 
         List<CommentResponseDto> dtoList = new ArrayList<>();
 
         for (Comment comment : commentList) {
+
             CommentResponseDto dto = new CommentResponseDto( comment.getId(),
                                                              comment.getUsername(),
                                                              comment.getContents(),

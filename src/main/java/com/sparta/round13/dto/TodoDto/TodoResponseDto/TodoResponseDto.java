@@ -1,8 +1,10 @@
 package com.sparta.round13.dto.TodoDto.TodoResponseDto;
 
+import com.sparta.round13.entity.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class TodoResponseDto {
@@ -14,6 +16,7 @@ public class TodoResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
+
     public TodoResponseDto(Long id, String todo, String username, Long password,
                            LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
@@ -22,6 +25,7 @@ public class TodoResponseDto {
         this.password = password;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+
     }
 
 }
