@@ -3,11 +3,15 @@ package com.sparta.round13.service;
 
 import com.sparta.round13.dto.TodoSaveRequestDto;
 import com.sparta.round13.dto.TodoResponseDto;
+import com.sparta.round13.dto.TodoSimpleResponseDto;
 import com.sparta.round13.entity.Todo;
 import com.sparta.round13.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +58,25 @@ public class TodoService {
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         );
+    }
+
+    public List<TodoSimpleResponseDto> getAllSchedule() {
+
+        // 레퍼지토리에서 Todo 를 가져와서 List 에 저장
+        List<Todo> todoList = todoRepository.findAllByOrderByModifiedAtDesc();
+
+        // dto 를 위한 List 생성
+        List<TodoSimpleResponseDto> dtoList = new ArrayList<>();
+
+        for (Todo todo : todoList) {
+            TodoSimpleResponseDto dto = new TodoSimpleResponseDto(
+                    todo.getId(),
+                    todo.getTodo(),
+                    todo.getUsername(),
+                    todo.getModifiedAt()
+            );
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 }
