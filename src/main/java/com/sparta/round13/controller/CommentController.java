@@ -40,5 +40,9 @@ public class CommentController {
         return commentService.updateComment(commentId, commentUpdateRequestDto);
     }
 
-
+    // 댓글 삭제
+    @DeleteMapping("/todos/comments/{commentId}")
+    public void deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+    }
 }

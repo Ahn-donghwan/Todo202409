@@ -95,4 +95,12 @@ public class CommentService {
                 comment.getModifiedAt()
         );
     }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+
+        commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
+
+        commentRepository.deleteById(commentId);
+    }
 }
