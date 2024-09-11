@@ -24,4 +24,9 @@ public class Todo extends Timestamped {
         this.username = username;
         this.password = password;
     }
+
+    public void updateTodo(String todo, String username) {
+        this.todo = todo;
+        this.username = username;
+    }
 }

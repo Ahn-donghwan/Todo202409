@@ -4,6 +4,7 @@ package com.sparta.round13.service;
 import com.sparta.round13.dto.TodoSaveRequestDto;
 import com.sparta.round13.dto.TodoResponseDto;
 import com.sparta.round13.dto.TodoSimpleResponseDto;
+import com.sparta.round13.dto.TodoUpdateRequestDto;
 import com.sparta.round13.entity.Todo;
 import com.sparta.round13.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -78,5 +79,22 @@ public class TodoService {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    @Transactional
+    public TodoResponseDto updateTodo(Long todoId,TodoUpdateRequestDto todoUpdateRequestDto) {
+
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new NullPointerException("찾으시는 글(Todo)이 없습니다."));
+
+        todo.updateTodo(todoUpdateRequestDto.getTodo(), todoUpdateRequestDto.getUsername());
+
+        return new TodoResponseDto(
+                todo.getId(),
+                todo.getTodo(),
+                todo.getUsername(),
+                todo.getPassword(),
+                todo.getCreatedAt(),
+                todo.getModifiedAt()
+        );
     }
 }
