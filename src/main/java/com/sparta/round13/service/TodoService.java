@@ -1,11 +1,10 @@
 package com.sparta.round13.service;
 
 
-import com.sparta.round13.dto.TodoSaveRequestDto;
-import com.sparta.round13.dto.TodoResponseDto;
-import com.sparta.round13.dto.TodoSimpleResponseDto;
-import com.sparta.round13.dto.TodoUpdateRequestDto;
+import com.sparta.round13.dto.*;
 import com.sparta.round13.entity.Todo;
+import com.sparta.round13.exception.NoSuchResourceException;
+import com.sparta.round13.exception.UnAuthorizedAccessException;
 import com.sparta.round13.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,10 @@ import java.util.List;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+
+    public Todo findTodoById(Long todoId){
+        return todoRepository.findById(todoId).orElseThrow(() -> new NoSuchResourceException("해당 리소스를 찾을 수 없습니다. ID :" + todoId ));
+    }
 
     @Transactional
     public TodoResponseDto saveTodo(TodoSaveRequestDto todoSaveRequestDto) {
@@ -49,7 +52,7 @@ public class TodoService {
     public TodoResponseDto getDetailTodo(Long todoId) {
 
         // todoId 로 Repository 에서 해당 정보 찾아오기
-        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new NullPointerException("찾으시는 글(Todo)이 없습니다."));
+        Todo todo = findTodoById(todoId);
 
         return new TodoResponseDto(
                 todo.getId(),
@@ -84,7 +87,7 @@ public class TodoService {
     @Transactional
     public TodoResponseDto updateTodo(Long todoId,TodoUpdateRequestDto todoUpdateRequestDto) {
 
-        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new NullPointerException("찾으시는 글(Todo)이 없습니다."));
+        Todo todo = findTodoById(todoId);
 
         todo.updateTodo(todoUpdateRequestDto.getTodo(), todoUpdateRequestDto.getUsername());
 
@@ -96,5 +99,16 @@ public class TodoService {
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         );
+    }
+
+    @Transactional
+    public void deleteTodo(Long todoId, TodoDeleteRequestDto todoDeleteRequestDto) {
+        Todo todo = findTodoById(todoId);
+
+        if(!todoDeleteRequestDto.getPassword().equals(todo.getPassword())){
+            throw new UnAuthorizedAccessException("접근 거부 (비밀번호가 틀렸습니다.) ");
+        }
+
+        todoRepository.deleteById(todoId);
     }
 }
