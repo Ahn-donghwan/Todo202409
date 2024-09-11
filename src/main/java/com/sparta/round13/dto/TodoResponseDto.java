@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class TodoSaveResponseDto {
+public class TodoResponseDto {
 
     private final Long id;
     private final String todo;
@@ -14,8 +14,8 @@ public class TodoSaveResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-    public TodoSaveResponseDto(Long id, String todo, String username, Long password,
-                               LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public TodoResponseDto(Long id, String todo, String username, Long password,
+                           LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.todo = todo;
         this.username = username;
