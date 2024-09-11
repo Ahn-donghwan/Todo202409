@@ -1,7 +1,11 @@
 package com.sparta.round13.service;
 
 
-import com.sparta.round13.dto.*;
+import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoDeleteRequestDto;
+import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoSaveRequestDto;
+import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoUpdateRequestDto;
+import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoResponseDto;
+import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoSimpleResponseDto;
 import com.sparta.round13.entity.Todo;
 import com.sparta.round13.exception.NoSuchResourceException;
 import com.sparta.round13.exception.UnAuthorizedAccessException;
@@ -85,7 +89,7 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponseDto updateTodo(Long todoId,TodoUpdateRequestDto todoUpdateRequestDto) {
+    public TodoResponseDto updateTodo(Long todoId, TodoUpdateRequestDto todoUpdateRequestDto) {
 
         Todo todo = findTodoById(todoId);
 
