@@ -1,11 +1,12 @@
 package com.sparta.round13.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.sparta.round13.dto.CommentDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +19,9 @@ public class Todo extends Timestamped {
     private String todo;
     private String username;
     private Long password;
+
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.REMOVE)
+    private final List<Comment> comments = new ArrayList<>();
 
     public Todo(String todo, String username, Long password) {
         this.todo = todo;
