@@ -11,37 +11,37 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/todos")
 public class CommentController {
 
     private final CommentService commentService;
 
     // 댓글 저장
-    @PostMapping("/todos/{todoId}/comments")
+    @PostMapping("/{todoId}/comments")
     public CommentResponseDto saveComment(@PathVariable Long todoId, @RequestBody CommentSaveRequestDto commentSaveRequestDto){
         return commentService.saveComment(todoId, commentSaveRequestDto);
     }
 
     // 댓글 전체 조회
-    @GetMapping("todos/{todoId}/comments")
+    @GetMapping("/{todoId}/comments")
     public List<CommentResponseDto> getAllComment(@PathVariable Long todoId){
         return commentService.getAllComment(todoId);
     }
 
     // 댓글 단건 조회
-    @GetMapping("todos/comments/{commentId}")
+    @GetMapping("/comments/{commentId}")
     public CommentResponseDto getDetailComment(@PathVariable Long commentId){
         return commentService.getDetailComment(commentId);
     }
 
     // 댓글 수정
-    @PutMapping("todos/comments/{commentId}")
+    @PutMapping("/comments/{commentId}")
     public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequestDto commentUpdateRequestDto){
         return commentService.updateComment(commentId, commentUpdateRequestDto);
     }
 
     // 댓글 삭제
-    @DeleteMapping("/todos/comments/{commentId}")
+    @DeleteMapping("/comments/{commentId}")
     public void deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);
     }
