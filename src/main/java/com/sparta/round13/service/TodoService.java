@@ -1,18 +1,19 @@
 package com.sparta.round13.service;
 
 
-import com.sparta.round13.dto.CommentDto;
+import com.sparta.round13.dto.commentDto.CommentDto;
 import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoDeleteRequestDto;
-import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoSaveRequestDto;
-import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoUpdateRequestDto;
+import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoRequestDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoNewsfeedDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoResponseDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoSimpleResponseDto;
 import com.sparta.round13.entity.Todo;
+import com.sparta.round13.entity.User;
 import com.sparta.round13.exception.NoSuchResourceException;
 import com.sparta.round13.exception.UnAuthorizedAccessException;
 import com.sparta.round13.repository.CommentRepository;
 import com.sparta.round13.repository.TodoRepository;
+import com.sparta.round13.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,18 +31,20 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     public Todo findTodoById(Long todoId){
         return todoRepository.findById(todoId).orElseThrow(() -> new NoSuchResourceException("해당 리소스를 찾을 수 없습니다. ID :" + todoId ));
     }
 
     @Transactional
-    public TodoResponseDto saveTodo(TodoSaveRequestDto todoSaveRequestDto) {
+    public TodoResponseDto saveTodo(TodoRequestDto todoSaveRequestDto) {
+        User user = userRepository.findById(todoSaveRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
 
         // todo 에 RequestDto 정보 담아주기
         Todo todo = new Todo(
                 todoSaveRequestDto.getTodo(),
-                todoSaveRequestDto.getUsername(),
+                user,
                 todoSaveRequestDto.getPassword()
         );
 
@@ -52,7 +55,7 @@ public class TodoService {
         return new TodoResponseDto(
                 todo.getId(),
                 todo.getTodo(),
-                todo.getUsername(),
+                todo.getUser(),
                 todo.getPassword(),
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
@@ -68,7 +71,7 @@ public class TodoService {
         return new TodoResponseDto(
                 todo.getId(),
                 todo.getTodo(),
-                todo.getUsername(),
+                todo.getUser(),
                 todo.getPassword(),
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
@@ -89,7 +92,7 @@ public class TodoService {
             TodoSimpleResponseDto dto = new TodoSimpleResponseDto(
                     todo.getId(),
                     todo.getTodo(),
-                    todo.getUsername(),
+                    todo.getUser(),
                     todo.getModifiedAt(),
                     commentList
             );
@@ -99,16 +102,17 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponseDto updateTodo(Long todoId, TodoUpdateRequestDto todoUpdateRequestDto) {
+    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto todoUpdateRequestDto) {
+        User user = userRepository.findById(todoUpdateRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
 
         Todo todo = findTodoById(todoId);
 
-        todo.updateTodo(todoUpdateRequestDto.getTodo(), todoUpdateRequestDto.getUsername());
+        todo.updateTodo(todoUpdateRequestDto.getTodo(), todo.getUser());
 
         return new TodoResponseDto(
                 todo.getId(),
                 todo.getTodo(),
-                todo.getUsername(),
+                todo.getUser(),
                 todo.getPassword(),
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
@@ -143,7 +147,7 @@ public class TodoService {
         // TodoNewsfeedDto 에 생성자를 구현해주면 위처럼 람다식으로 간결하게 표현 가능
         return todoPage.map(todo -> new TodoNewsfeedDto(
                 todo.getTodo(),
-                todo.getUsername(),
+                todo.getUser(),
                 todo.getCreatedAt(),
                 todo.getModifiedAt(),
                 commentRepository.countByTodoId(todo.getId())
@@ -158,7 +162,7 @@ public class TodoService {
         // 람다?
         return todoPage.map(todo -> new TodoNewsfeedDto(
                 todo.getTodo(),
-                todo.getUsername(),
+                todo.getUser(),
                 todo.getCreatedAt(),
                 todo.getModifiedAt(),
                 commentRepository.countByTodoId(todo.getId())

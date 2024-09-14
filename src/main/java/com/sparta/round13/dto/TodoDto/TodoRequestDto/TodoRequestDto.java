@@ -3,8 +3,9 @@ package com.sparta.round13.dto.TodoDto.TodoRequestDto;
 import lombok.Getter;
 
 @Getter
-public class TodoUpdateRequestDto {
+public class TodoRequestDto {
 
     private String todo;
-    private String username;
+    private Long userId;
+    private Long password;
 }

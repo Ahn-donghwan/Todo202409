@@ -1,11 +1,10 @@
 package com.sparta.round13.service;
 
-import com.sparta.round13.dto.CommentSaveRequestDto;
-import com.sparta.round13.dto.CommentResponseDto;
-import com.sparta.round13.dto.CommentUpdateRequestDto;
+import com.sparta.round13.dto.commentDto.commentRequestDto.CommentSaveRequestDto;
+import com.sparta.round13.dto.commentDto.commentResponseDto.CommentResponseDto;
+import com.sparta.round13.dto.commentDto.commentRequestDto.CommentUpdateRequestDto;
 import com.sparta.round13.entity.Comment;
 import com.sparta.round13.entity.Todo;
-import com.sparta.round13.exception.NoSuchResourceException;
 import com.sparta.round13.repository.CommentRepository;
 import com.sparta.round13.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,6 +67,18 @@ public class CommentService {
         return dtoList;
     }
 
+    public List<CommentResponseDto> getAllCommentWithMap(Long todoId) {
+
+        List<Comment> commentList = commentRepository.findAllByTodoId(todoId);
+
+        return commentList.stream().map(comment -> new CommentResponseDto(
+                comment.getId(),
+                comment.getUsername(),
+                comment.getContents(),
+                comment.getCreatedAt(),
+                comment.getModifiedAt())).collect(Collectors.toList());
+    }
+
     public CommentResponseDto getDetailComment(Long commentId) {
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
@@ -103,4 +115,6 @@ public class CommentService {
 
         commentRepository.deleteById(commentId);
     }
+
+
 }

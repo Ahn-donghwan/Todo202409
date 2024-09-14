@@ -1,4 +1,4 @@
-package com.sparta.round13.dto;
+package com.sparta.round13.dto.userDto;
 
 import lombok.Getter;
 

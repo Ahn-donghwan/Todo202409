@@ -1,8 +1,8 @@
 package com.sparta.round13.controller;
 
-import com.sparta.round13.dto.CommentSaveRequestDto;
-import com.sparta.round13.dto.CommentResponseDto;
-import com.sparta.round13.dto.CommentUpdateRequestDto;
+import com.sparta.round13.dto.commentDto.commentRequestDto.CommentSaveRequestDto;
+import com.sparta.round13.dto.commentDto.commentResponseDto.CommentResponseDto;
+import com.sparta.round13.dto.commentDto.commentRequestDto.CommentUpdateRequestDto;
 import com.sparta.round13.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +23,15 @@ public class CommentController {
     }
 
     // 댓글 전체 조회
-    @GetMapping("/{todoId}/comments")
+    @GetMapping("/{todoId}/v1/comments")
     public List<CommentResponseDto> getAllComment(@PathVariable Long todoId){
         return commentService.getAllComment(todoId);
+    }
+
+    // 댓글 전체 조회 (stream.map 사용)
+    @GetMapping("/{todoId}/v2/comments")
+    public List<CommentResponseDto> getAllCommentWithMap(@PathVariable Long todoId){
+        return commentService.getAllCommentWithMap(todoId);
     }
 
     // 댓글 단건 조회

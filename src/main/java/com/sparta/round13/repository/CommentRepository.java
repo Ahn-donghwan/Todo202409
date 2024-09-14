@@ -1,6 +1,6 @@
 package com.sparta.round13.repository;
 
-import com.sparta.round13.dto.CommentDto;
+import com.sparta.round13.dto.commentDto.CommentDto;
 import com.sparta.round13.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
