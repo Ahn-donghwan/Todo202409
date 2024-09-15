@@ -1,6 +1,7 @@
 package com.sparta.round13.controller;
 
 import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoDeleteRequestDto;
+import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoRequestDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoNewsfeedDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoResponseDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoSimpleResponseDto;
@@ -24,8 +25,8 @@ public class TodoController {
 
     // [Lv1] 게시글 작성
     @PostMapping
-    public ResponseEntity<TodoResponseDto> saveTodo(@RequestBody TodoSaveRequestDto todoSaveRequestDto) {
-        return ResponseEntity.ok(todoService.saveTodo(todoSaveRequestDto));
+    public ResponseEntity<TodoResponseDto> saveTodo(@RequestBody TodoRequestDto todoRequestDto) {
+        return ResponseEntity.ok(todoService.saveTodo(todoRequestDto));
 //        ok 안하고 created 로 시도
 //        return ResponseEntity.created(null).body(null);
     }
@@ -44,8 +45,8 @@ public class TodoController {
 
     // [Lv4] 선택한 일정 수정
     @PutMapping("/{todoId}")
-    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @RequestBody TodoUpdateRequestDto todoUpdateRequestDto) {
-        return ResponseEntity.ok(todoService.updateTodo(todoId, todoUpdateRequestDto));
+    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto todoRequestDto) {
+        return ResponseEntity.ok(todoService.updateTodo(todoId, todoRequestDto));
     }
 
     // [Lv5] 선택한 일정 삭제

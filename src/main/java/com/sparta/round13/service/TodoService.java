@@ -38,14 +38,14 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponseDto saveTodo(TodoRequestDto todoSaveRequestDto) {
-        User user = userRepository.findById(todoSaveRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
+    public TodoResponseDto saveTodo(TodoRequestDto todoRequestDto) {
+        User user = userRepository.findById(todoRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
 
         // todo 에 RequestDto 정보 담아주기
         Todo todo = new Todo(
-                todoSaveRequestDto.getTodo(),
+                todoRequestDto.getTodo(),
                 user,
-                todoSaveRequestDto.getPassword()
+                todoRequestDto.getPassword()
         );
 
         // 레퍼지토리에 저장
@@ -102,12 +102,12 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto todoUpdateRequestDto) {
-        User user = userRepository.findById(todoUpdateRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
+    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto todoRequestDto) {
+        User user = userRepository.findById(todoRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
 
         Todo todo = findTodoById(todoId);
 
-        todo.updateTodo(todoUpdateRequestDto.getTodo(), todo.getUser());
+        todo.updateTodo(todoRequestDto.getTodo(), todo.getUser());
 
         return new TodoResponseDto(
                 todo.getId(),
