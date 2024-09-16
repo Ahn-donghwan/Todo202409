@@ -19,10 +19,16 @@ public class UserController {
         return userService.saveUser(userRequestDto);
     }
 
-    // 유저 전체 목록 조회
-    @GetMapping("/api/users")
-    public List<UserResponseDto> getAllUsers(){
-        return userService.getAllUsers();
+    // 유저 전체 목록 조회 (v1)
+    @GetMapping("/api/v1/users")
+    public List<UserResponseDto> getAllUsersV1(){
+        return userService.getAllUsersV1();
+    }
+
+    // 유저 전체 목록 조회 (v2)
+    @GetMapping("/api/v2/users")
+    public List<UserResponseDto>  getAllUsersV2(){
+        return userService.getAllUsersV2();
     }
 
     // 유저 단건 조회

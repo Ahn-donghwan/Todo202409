@@ -13,25 +13,17 @@ public class TodoNewsfeedDto {
 
     
     private final String todo;
-    private final User user;
+    private final String username;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
     private final int count;
 
-    public TodoNewsfeedDto(String todo, User user,
+    public TodoNewsfeedDto(String todo, String username,
                            LocalDateTime createdAt, LocalDateTime modifiedAt, int count) {
         this.todo = todo;
-        this.user = user;
+        this.username = username;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.count = count;
-    }
-
-    public TodoNewsfeedDto(Todo todo, int count) {
-        this.todo = todo.getTodo();
-        this.user = todo.getUser();
-        this.createdAt = todo.getCreatedAt();
-        this.modifiedAt = todo.getModifiedAt();
         this.count = count;
     }
 }

@@ -1,6 +1,6 @@
 package com.sparta.round13.service;
 
-import com.sparta.round13.dto.userDto.UserDto;
+
 import com.sparta.round13.dto.userDto.UserRequestDto;
 import com.sparta.round13.dto.userDto.UserResponseDto;
 import com.sparta.round13.entity.User;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,8 @@ public class UserService {
         );
     }
 
-    public List<UserResponseDto> getAllUsers() {
+    // v1
+    public List<UserResponseDto> getAllUsersV1() {
         List<User> userList = userRepository.findAll();
 
         List<UserResponseDto> dtoList = new ArrayList<>();
@@ -50,6 +52,19 @@ public class UserService {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    // v2
+    public List<UserResponseDto> getAllUsersV2() {
+        List<User> userList = userRepository.findAll();
+
+        return userList.stream().map(user -> new UserResponseDto(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getModifiedAt()
+        )).collect(Collectors.toList());
     }
 
     public UserResponseDto getDetailUser(Long userId) {
@@ -83,4 +98,7 @@ public class UserService {
         userRepository.findById(userId).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
         userRepository.deleteById(userId);
     }
+
 }
+
+

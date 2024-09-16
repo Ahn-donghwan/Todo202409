@@ -7,5 +7,6 @@ public class TodoRequestDto {
 
     private String todo;
     private Long userId;
+    private String username;
     private Long password;
 }

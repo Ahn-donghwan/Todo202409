@@ -4,7 +4,7 @@ import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoDeleteRequestDto;
 import com.sparta.round13.dto.TodoDto.TodoRequestDto.TodoRequestDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoNewsfeedDto;
 import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoResponseDto;
-import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoSimpleResponseDto;
+import com.sparta.round13.dto.TodoDto.TodoResponseDto.TodoWithCommentResponseDto;
 import com.sparta.round13.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,13 +33,13 @@ public class TodoController {
 
     // [Lv2] 단건 조회
     @GetMapping("/{todoId}")
-    public ResponseEntity<TodoResponseDto> getDetailTodo(@PathVariable Long todoId) {
+    public ResponseEntity<TodoWithCommentResponseDto> getDetailTodo(@PathVariable Long todoId) {
         return ResponseEntity.ok(todoService.getDetailTodo(todoId));
     }
 
     // [Lv3] 전체 목록 조회
     @GetMapping
-    public ResponseEntity<List<TodoSimpleResponseDto>> getAllTodo() {
+    public ResponseEntity<List<TodoWithCommentResponseDto>> getAllTodo() {
         return ResponseEntity.ok(todoService.getAllTodo());
     }
 
