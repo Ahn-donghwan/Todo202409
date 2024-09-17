@@ -43,17 +43,22 @@ public class TodoService {
         // step[1] : userId 로 User data 를 찾아서 user 에 전달 ( 없다면 예외 처리 )
         User user = userRepository.findById(todoRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
 
-        // step[2] : todo 에 RequestDto 정보 담아주기
+        // step[2] : todoRequestDto.getUserId() 와 todoRequestDto.getUsername() 의 정보가 알맞는지를 확인
+        if(!userRepository.findByUsername(todoRequestDto.getUsername()).equals(userRepository.findById(todoRequestDto.getUserId()))){
+            throw new NoSuchResourceException("입력 값이 잘못 되었습니다.");
+        }
+
+        // step[3] : todo 에 RequestDto 정보 담아주기
         Todo todo = new Todo(
                 todoRequestDto.getTodo(),
                 user,
                 todoRequestDto.getPassword()
         );
 
-        // step[3] : 레퍼지토리에 저장
+        // step[4] : 레퍼지토리에 저장
         todoRepository.save(todo);
 
-        // step[4] : ResponseDto 로 반환
+        // step[5] : ResponseDto 로 반환
         return new TodoResponseDto(
                 todo.getId(),
                 todo.getTodo(),
@@ -114,6 +119,11 @@ public class TodoService {
 
         // step[1] : userId 로 User data 를 찾아서 user 에 전달 ( 없다면 예외 처리 )
         User user = userRepository.findById(todoRequestDto.getUserId()).orElseThrow(() -> new NullPointerException("해당 리소스를 찾을 수 없습니다."));
+
+        // step[*] : todoRequestDto.getUserId() 와 todoRequestDto.getUsername() 의 정보가 알맞는지를 확인
+        if(!userRepository.findByUsername(todoRequestDto.getUsername()).equals(userRepository.findById(todoRequestDto.getUserId()))){
+            throw new NoSuchResourceException("입력 값이 잘못 되었습니다.");
+        }
 
         // step[2] : todoId 로 db 에서 todo 찾기
         Todo todo = findTodoById(todoId);

@@ -1,6 +1,7 @@
 package com.sparta.round13.dto.TodoDto.TodoResponseDto;
 
 import com.sparta.round13.dto.commentDto.CommentDto;
+import com.sparta.round13.dto.userDto.UserDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
